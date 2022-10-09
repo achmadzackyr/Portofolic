@@ -36,6 +36,41 @@ class SkillController extends Controller
         ]);
 
         //return response
-        return new SkillResource(true, 'Skill successfully added!', $skill);
+        return new SkillResource(true, 'Skill Successfully Added!', $skill);
+    }
+
+    public function show(Skill $skill)
+    {
+        //return single post as a resource
+        return new SkillResource(true, 'Skill Found!', $skill);
+    }
+
+    public function update(Request $request, Skill $skill)
+    {
+        //define validation rules
+        $validator = Validator::make($request->all(), [
+            'skill_name' => 'required',
+        ]);
+
+        //check if validation fails
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $skill->update([
+            'skill_name' => $request->skill_name,
+        ]);
+
+        //return response
+        return new SkillResource(true, 'Skill Successfully Updated!', $skill);
+    }
+
+    public function destroy(Skill $skill)
+    {
+        //delete post
+        $skill->delete();
+
+        //return response
+        return new SkillResource(true, 'Skill Successfully Deleted!', null);
     }
 }
