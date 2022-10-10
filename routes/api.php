@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\SkillController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,7 +28,13 @@ Route::controller(AuthController::class)->group(function () {
             Route::post('/', 'update');
         });
         Route::post('/auth/logout', 'logout');
-
         Route::apiResource('/skills', SkillController::class);
+
+        //admin route
+        Route::middleware('ability:admin')->group(function () {
+            Route::apiResource('/users', UserController::class);
+            Route::post('/users/assign-admin', [UserController::class, 'assignAdmin']);
+            Route::post('/users/revoke-admin', [UserController::class, 'revokeAdmin']);
+        });
     });
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommonResource;
+use App\Http\Traits\RoleTrait;
 use App\Models\User;
 use Auth;
 use Illuminate\Auth\Events\PasswordReset;
@@ -14,6 +15,8 @@ use Validator;
 
 class AuthController extends Controller
 {
+    use RoleTrait;
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -35,6 +38,7 @@ class AuthController extends Controller
             'username' => $request->username,
             'is_active' => true,
             'is_public' => true,
+            'is_admin' => false,
             'is_fulltime_hire_ready' => false,
             'is_freelance_hire_ready' => false,
         ]);
@@ -53,7 +57,11 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request['email'])->firstOrFail();
-            $token = $user->createToken('auth_token')->plainTextToken;
+            if ($user->is_admin) {
+                $token = $user->createToken('auth_token', ['admin'])->plainTextToken;
+            } else {
+                $token = $user->createToken('auth_token', ['user'])->plainTextToken;
+            }
             $user->token = $token;
 
             return new CommonResource(true, 'You Successfully Logged In!', $user);
@@ -75,7 +83,6 @@ class AuthController extends Controller
             'first_name' => 'required',
             'username' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
         ]);
 
         if ($validator->fails()) {
@@ -85,7 +92,6 @@ class AuthController extends Controller
         $user->update([
             'first_name' => $request->first_name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
             'username' => $username,
             'is_active' => $request->is_active,
             'is_public' => $request->is_public,

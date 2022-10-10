@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->boolean('is_active');
             $table->boolean('is_public');
+            $table->boolean('is_admin');
             $table->boolean('is_fulltime_hire_ready');
             $table->boolean('is_freelance_hire_ready');
             $table->string('profile_picture_url')->nullable();

@@ -27,6 +27,7 @@ class User extends Authenticatable
         'phone',
         'is_active',
         'is_public',
+        'is_admin',
         'is_fulltime_hire_ready',
         'is_freelance_hire_ready',
         'profile_picture_url',
