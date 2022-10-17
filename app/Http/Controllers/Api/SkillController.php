@@ -12,7 +12,7 @@ class SkillController extends Controller
 {
     public function index()
     {
-        $skills = Skill::latest()->paginate(5);
+        $skills = Skill::latest()->paginate(10);
 
         //return collection of posts as a resource
         return new SkillResource(true, 'Skill Lists', $skills);

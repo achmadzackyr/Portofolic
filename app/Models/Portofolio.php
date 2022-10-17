@@ -24,4 +24,9 @@ class Portofolio extends Model
     {
         return $this->belongsTo(PortofolioType::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

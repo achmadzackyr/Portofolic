@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PageController;
+use App\Http\Controllers\Api\PortofolioController;
+use App\Http\Controllers\Api\PortofolioTypeController;
 use App\Http\Controllers\Api\SkillController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +32,9 @@ Route::controller(AuthController::class)->group(function () {
         });
         Route::post('/auth/logout', 'logout');
         Route::apiResource('/skills', SkillController::class);
+        Route::apiResource('/portofolio-types', PortofolioTypeController::class);
+        Route::get('/portofolios/get-my-portofolio', [PortofolioController::class, 'getMyPortofolio']);
+        Route::post('/portofolios/add-my-portofolio', [PortofolioController::class, 'addMyPortofolio']);
 
         //admin route
         Route::middleware('ability:admin')->group(function () {
@@ -38,3 +44,5 @@ Route::controller(AuthController::class)->group(function () {
         });
     });
 });
+
+Route::post('/pages/get-portofolio-page', [PageController::class, 'getPortofolioPageByUsername']);
