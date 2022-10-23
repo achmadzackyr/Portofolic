@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('portofolios', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('portofolio_type_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('portofolio_name');
+            $table->unsignedBigInteger('portofolio_type_id')->nullable();
+            $table->string('portofolio_name')->nullable();
             $table->longText('portofolio_description')->nullable();
             $table->string('portofolio_url')->nullable();
             $table->date('portofolio_date')->nullable();

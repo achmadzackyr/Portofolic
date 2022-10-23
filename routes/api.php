@@ -35,6 +35,11 @@ Route::controller(AuthController::class)->group(function () {
         Route::apiResource('/portofolio-types', PortofolioTypeController::class);
         Route::get('/portofolios/get-my-portofolio', [PortofolioController::class, 'getMyPortofolio']);
         Route::post('/portofolios/add-my-portofolio', [PortofolioController::class, 'addMyPortofolio']);
+        Route::post('/portofolios/add-draft-portofolio', [PortofolioController::class, 'addDraftPortofolio']);
+        Route::post('/portofolios/upload-portofolio-image', [PortofolioController::class, 'uploadPortofolioImage']);
+        Route::post('/portofolios/save-portofolio', [PortofolioController::class, 'savePortofolio']);
+        Route::post('/portofolios/delete-portofolio', [PortofolioController::class, 'deletePortofolio']);
+        Route::post('/portofolios/test-upload', [PortofolioController::class, 'testUpload']);
 
         //admin route
         Route::middleware('ability:admin')->group(function () {
