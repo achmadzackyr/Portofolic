@@ -229,4 +229,39 @@ class PortofolioController extends Controller
         };
         return new CommonResource(true, 'Portofolio Page Data Found!', $imgList);
     }
+
+    public function updateHome(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(new CommonResource(false, $validator->errors(), null), 422);
+        }
+
+        $user = Auth::user();
+
+        if ($request->profile_picture_url) {
+            $fileName = strtolower("avatar-{$user->id}.{$request->profile_picture_url->extension()}");
+            $path = Storage::putFileAs(
+                'avatar', $request->file('profile_picture_url'), $fileName
+            );
+
+            $user->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'headline' => $request->headline,
+                'profile_picture_url' => $fileName,
+            ]);
+        } else {
+            $user->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'headline' => $request->headline,
+            ]);
+        }
+
+        return new CommonResource(true, 'Update Home Success!', $user);
+    }
 }

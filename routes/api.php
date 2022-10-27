@@ -40,6 +40,7 @@ Route::controller(AuthController::class)->group(function () {
         Route::post('/portofolios/save-portofolio', [PortofolioController::class, 'savePortofolio']);
         Route::post('/portofolios/delete-portofolio', [PortofolioController::class, 'deletePortofolio']);
         Route::post('/portofolios/test-upload', [PortofolioController::class, 'testUpload']);
+        Route::post('/portofolios/update-home', [PortofolioController::class, 'updateHome']);
 
         //admin route
         Route::middleware('ability:admin')->group(function () {
