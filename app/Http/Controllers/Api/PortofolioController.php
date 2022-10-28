@@ -242,18 +242,25 @@ class PortofolioController extends Controller
 
         $user = Auth::user();
 
-        if ($request->profile_picture_url) {
-            $fileName = strtolower("avatar-{$user->id}.{$request->profile_picture_url->extension()}");
+        if ($request->profile_picture_url && $request->profile_picture_url != 'undefined') {
+            $needToDelete = $user->profile_picture_url;
+            $time = time();
+            $fileName = strtolower("avatar-{$user->id}-{$time}.{$request->profile_picture_url->extension()}");
             $path = Storage::putFileAs(
                 'avatar', $request->file('profile_picture_url'), $fileName
             );
+            if ($path) {
+                $user->update([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'headline' => $request->headline,
+                    'profile_picture_url' => $fileName,
+                ]);
 
-            $user->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'headline' => $request->headline,
-                'profile_picture_url' => $fileName,
-            ]);
+                $deletePath = Storage::delete(
+                    $needToDelete
+                );
+            }
         } else {
             $user->update([
                 'first_name' => $request->first_name,
@@ -263,5 +270,15 @@ class PortofolioController extends Controller
         }
 
         return new CommonResource(true, 'Update Home Success!', $user);
+    }
+
+    public function updateAbout(Request $request)
+    {
+        $user = Auth::user();
+        $user->update([
+            'about_me' => $request->about_me,
+        ]);
+
+        return new CommonResource(true, 'Update About Success!', $user);
     }
 }
