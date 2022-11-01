@@ -243,7 +243,7 @@ class PortofolioController extends Controller
         $user = Auth::user();
 
         if ($request->profile_picture_url && $request->profile_picture_url != 'undefined') {
-            $needToDelete = $user->profile_picture_url;
+            //$needToDelete = $user->profile_picture_url;
             $time = time();
             $fileName = strtolower("avatar-{$user->id}-{$time}.{$request->profile_picture_url->extension()}");
             $path = Storage::putFileAs(
@@ -257,9 +257,9 @@ class PortofolioController extends Controller
                     'profile_picture_url' => $fileName,
                 ]);
 
-                $deletePath = Storage::delete(
-                    $needToDelete
-                );
+                // $deletePath = Storage::delete(
+                //     $needToDelete
+                // );
             }
         } else {
             $user->update([
