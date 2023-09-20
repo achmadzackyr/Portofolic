@@ -36,6 +36,7 @@ Route::controller(AuthController::class)->group(function () {
         Route::get('/portofolios/get-my-portofolio', [PortofolioController::class, 'getMyPortofolio']);
         Route::post('/portofolios/add-my-portofolio', [PortofolioController::class, 'addMyPortofolio']);
         Route::post('/portofolios/add-draft-portofolio', [PortofolioController::class, 'addDraftPortofolio']);
+        Route::post('/portofolios/prepare-draft-portofolio', [PortofolioController::class, 'prepareDraftPortofolio']);
         Route::post('/portofolios/upload-portofolio-image', [PortofolioController::class, 'uploadPortofolioImage']);
         Route::post('/portofolios/save-portofolio', [PortofolioController::class, 'savePortofolio']);
         Route::post('/portofolios/delete-portofolio', [PortofolioController::class, 'deletePortofolio']);

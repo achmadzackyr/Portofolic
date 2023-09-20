@@ -86,6 +86,29 @@ class PortofolioController extends Controller
         return new CommonResource(true, 'Portofolio Draft Has Been Created!', $porto);
     }
 
+    public function prepareDraftPortofolio(Request $request)
+    {
+        $user = Auth::user();
+        $myLastDraftExist = Portofolio::where("user_id", $user->id)
+            ->where("is_draft", 1)->orderBy('created_at', 'desc')->first();
+
+        if ($myLastDraftExist != null) {
+            return new CommonResource(true, 'Portofolio Draft Has Been Loaded!', $myLastDraftExist);
+        } else {
+            $myLastSlug = Portofolio::where("user_id", $user->id)->orderBy('created_at', 'desc')->first()->slug;
+            $slug = explode('-', $myLastSlug)[1] + 1;
+            $newSlug = "{$user->id}-{$slug}";
+
+            $porto = Portofolio::create([
+                'user_id' => $user->id,
+                'slug' => $newSlug,
+                'is_draft' => true,
+            ]);
+
+            return new CommonResource(true, 'Portofolio Draft Has Been Created!', $porto);
+        }
+    }
+
     public function uploadPortofolioImage(Request $request)
     {
         $validator = Validator::make($request->all(), [
